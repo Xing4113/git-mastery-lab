@@ -1,0 +1,38 @@
+Stage 1 Challenge #4 — “Cleaning & Restoring Safely”
+
+Situation (on main):
+
+Your repo has app.txt with “Hello” committed.
+
+You make these changes:
+
+Modify app.txt to say “Hello world”
+
+Create a new untracked file temp.log with any text in it
+
+Create a new untracked folder drafts/ with a file inside
+
+You decide:
+
+Discard the changes in app.txt completely (restore from last commit)
+
+Remove temp.log and everything in drafts/ without touching tracked files
+
+Verify that your working directory is clean.
+
+Your task:
+Reply with the exact Git commands only (step-by-step, no explanations).
+
+Answer:
+
+# Step 1: Discard changes in app.txt
+git restore app.txt
+
+# Step 2: Remove untracked file
+git clean -f temp.log
+
+# Step 3: Remove untracked folder
+git clean -fd drafts/
+
+# Step 4: Verify clean working directory
+git status
