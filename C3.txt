@@ -1,0 +1,56 @@
+Stage 1 Challenge #3 — “History & Targeted Undo (No Rewrite)”
+
+Situation (on main):
+
+Make three commits in this exact order:
+
+feat: add greeting to app.txt → append a new line: Hello
+
+chore: tweak spacing in app.txt → add a blank line after Hello
+
+feat: enable debug in config.json → create config.json with:
+
+{"debug": true}
+
+
+You realize the spacing commit was noise. Undo only that whitespace change while keeping A and C intact.
+
+Constraint: Do not rewrite history (no rebase, no reset).
+
+Record a new commit with message: revert: remove extra spacing in app.txt.
+
+Verify your work by showing:
+
+A compact history for app.txt only
+
+A diff that proves the extra blank line is gone
+
+Your task:
+Reply with the exact Git commands only (step-by-step, no explanations).
+(Any valid approach that doesn’t rewrite history is acceptable.)
+
+Answer:
+
+# Step 1: Greeting commit
+git add app.txt
+git commit -m "feat: add greeting to app.txt"
+
+# Step 2: Spacing commit
+git add app.txt
+git commit -m "chore: tweak spacing in app.txt"
+
+# Step 3: Debug config commit
+git add config.json
+git commit -m "feat: enable debug in config.json"
+
+# Step 4: Find the hash for the spacing commit
+git log --oneline
+
+# Step 5: Revert that specific commit (replace <hash> with actual)
+git revert <hash> -m "revert: remove extra spacing in app.txt"
+
+# History for app.txt only
+git log --oneline -- app.txt
+
+# Diff to prove blank line is gone
+git diff HEAD~1 HEAD -- app.txt
