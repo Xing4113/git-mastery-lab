@@ -1,0 +1,51 @@
+Stage 1 Challenge #2 – “Undo & Safety Nets”
+
+Situation:
+You’re on main working in a file called notes.txt.
+
+Add the first line to notes.txt and commit with:
+
+chore: add line A
+
+
+Add two more lines to notes.txt. By mistake, you run:
+
+git add .
+
+
+You realize you only want to commit the second new line now with message:
+
+feat: add line B
+
+
+You notice a typo in the last commit message (“line B” was typed as “line Bb”) and want to fix just that message.
+
+Finally, you decide the most recent commit should be kept as changes but uncommitted, so you can re-stage and re-commit it differently.
+
+Your task:
+Reply with the exact Git commands (step-by-step, no explanations) you would run to achieve this.
+
+
+Answer:
+
+# Step 1: Add first line and commit
+git add notes.txt
+git commit -m "chore: add line A"
+
+# Step 2: You mistakenly staged everything
+git add .
+
+# Step 3: Unstage all changes
+git restore --staged .
+
+# Step 4: Stage only the hunk for line B
+git add -p notes.txt
+
+# Step 5: Commit with the incorrect message (simulating typo)
+git commit -m "feat: add line Bb"
+
+# Step 6: Fix the typo in the commit message
+git commit --amend -m "feat: add line B"
+
+# Step 7: Keep the last commit’s changes but uncommitted
+git reset --soft HEAD~1
