@@ -1,1 +1,3 @@
-/app.js - main app file
+//app.js - main app file
+
+// add on new component
