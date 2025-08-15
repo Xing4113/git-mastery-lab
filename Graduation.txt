@@ -1,0 +1,130 @@
+Part 1 — Kickoff
+
+Create and switch to a branch called hotfix/login-bug.
+
+Create login.js with:
+
+function login(user) {
+    console.log("Login successful");
+}
+
+
+Commit with message:
+
+feat: add basic login function
+
+Part 2 — The bug
+
+Edit login.js:
+
+function login(user) {
+    console.log("Login successful for", user);
+}
+
+
+Accidentally also create README.md with:
+
+# Login System
+This is a login module.
+
+
+Stage and commit both together with the wrong message:
+
+feat: add login with username
+
+Part 3 — Clean the commit
+
+Split the change into two separate commits:
+
+feat: add login with username (only login.js)
+
+docs: add login README (README.md)
+
+Part 4 — Messy working directory
+
+Create an untracked file debug.txt and an untracked folder logs/ with a file inside.
+
+Also modify login.js to:
+
+function login(user) {
+    console.log("Login successful for", user);
+    console.log("Debug mode enabled");
+}
+
+
+Discard the change to login.js but remove only the untracked file & folder, leaving tracked files alone.
+
+Part 5 — Wrong branch
+
+On hotfix/login-bug, edit login.js to:
+
+function login(user) {
+    console.log("Login successful for", user);
+    console.log("Security check passed");
+}
+
+
+Realize this edit belongs to main. Move it there without copy-pasting.
+
+Part 6 — Review
+
+Show:
+
+Compact graph of all commits
+
+History of login.js only, with hash/date/author/message
+
+Diff from the first to the latest commit for login.js
+
+Your task:
+Reply with the exact Git commands only (step-by-step) you would run to complete this scenario cleanly.
+
+Answer:
+
+# Part 1 — kickoff
+git switch -c hotfix/login-bug
+Set-Content login.js 'function login(user) {
+    console.log("Login successful");
+}'
+git add login.js
+git commit -m "feat: add basic login function"
+
+# Part 2 — the bug (accidentally mix in README)
+Set-Content login.js 'function login(user) {
+    console.log("Login successful for", user);
+}'
+Set-Content README.md '# Login System
+This is a login module.'
+git add .
+git commit -m "feat: add login with username"   # Oops: README included too
+
+# Part 3 — split that commit into two (no revert; rewrite local feature branch)
+git reset --soft HEAD~1          # keep changes staged
+git restore --staged README.md   # unstage README, keep login.js staged
+git commit -m "feat: add login with username"
+git add README.md
+git commit -m "docs: add login README"
+
+# Part 4 — messy working dir: add debug then clean untracked only
+Set-Content login.js 'function login(user) {
+    console.log("Login successful for", user);
+    console.log("Debug mode enabled");
+}'
+echo "temp" > debug.txt
+mkdir logs
+echo "x" > logs/any.txt
+git restore login.js             # discard tracked change
+git clean -f debug.txt           # remove untracked file
+git clean -fd logs/              # remove untracked folder
+
+# Part 5 — wrong branch: move uncommitted edit from feature -> main
+Add-Content login.js '    console.log("Security check passed");'
+git stash push -m "login.js: security check" login.js   # stash ONLY this file
+git switch main
+git stash pop
+
+# Part 6 — review
+git log --oneline --graph --decorate --all
+git log --follow --pretty=format:"%h %ad %an %s" --date=short -- login.js
+$FIRST = git rev-list --max-parents=0 HEAD
+git diff $FIRST HEAD -- login.js
