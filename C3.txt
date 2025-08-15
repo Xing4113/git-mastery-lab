@@ -47,7 +47,8 @@ git commit -m "feat: enable debug in config.json"
 git log --oneline
 
 # Step 5: Revert that specific commit (replace <hash> with actual)
-git revert <hash> -m "revert: remove extra spacing in app.txt"
+git revert <hash> -n
+git commit -m "revert: remove extra spacing in app.txt"
 
 # History for app.txt only
 git log --oneline -- app.txt
