@@ -1,0 +1,127 @@
+Stage 1 — Final Boss #2: “The Documentation & Bug Fix Sprint”
+
+Scenario:
+You’re working on main, but you need to both improve documentation and fix a bug.
+You must keep commits clean, undo mistakes without rewriting shared history, and leave the repo tidy.
+
+Part 1 — Starting the work
+
+Create and switch to feature/docs-and-bugfix.
+
+Add a new file CONTRIBUTING.md with:
+
+# Contribution Guidelines
+Please follow the rules.
+
+
+Commit with:
+
+docs: add contribution guidelines
+
+Part 2 — Mixed edits
+
+Edit CONTRIBUTING.md to:
+
+# Contribution Guidelines
+Please follow the rules.
+
+1. Fork the repo
+2. Create a branch
+
+
+In app.txt (already exists in repo), fix a typo:
+Change Helo → Hello.
+
+Stage only the CONTRIBUTING.md changes and commit with:
+
+docs: add branching steps
+
+
+Stage only the app.txt change and commit with:
+
+fix: correct greeting typo
+
+Part 3 — Oops, wrong message
+
+Add a new line to app.txt:
+
+Goodbye
+
+
+Commit with wrong message:
+
+feat: add closing
+
+
+Realize it should be:
+
+feat: add farewell message
+
+
+Amend the last commit message to fix it.
+
+Part 4 — Cleaning
+
+Create an untracked file notes.tmp and an untracked folder scratch/ with any file inside.
+
+Remove both untracked items without touching tracked files.
+
+Part 5 — History surgery without rewrite
+
+Realize docs: add branching steps had a wrong line in CONTRIBUTING.md (“Fork the repo” is not needed).
+Revert that commit only, without affecting others.
+Commit message for revert:
+
+revert: remove unnecessary fork instruction
+
+Part 6 — History review
+
+Show a compact graph of the full repo.
+
+Show the history of app.txt only, with hash/date/author/message.
+
+Show exactly what was changed in the fix: correct greeting typo commit.
+
+Your task:
+Reply with the exact Git commands only (step-by-step) to complete this whole scenario successfully.
+
+Answer:
+
+# Part 1 — start feature
+git switch -c feature/docs-and-bugfix
+printf "# Contribution Guidelines\nPlease follow the rules.\n" > CONTRIBUTING.md
+git add CONTRIBUTING.md
+git commit -m "docs: add contribution guidelines"
+
+# Part 2 — mixed edits (separate commits)
+printf "\n1. Fork the repo\n2. Create a branch\n" >> CONTRIBUTING.md
+# (edit app.txt in your editor to change 'Helo' -> 'Hello')
+git add CONTRIBUTING.md
+git commit -m "docs: add branching steps"
+git add app.txt
+git commit -m "fix: correct greeting typo"
+
+# Part 3 — wrong message → amend
+echo "Goodbye" >> app.txt
+git add app.txt
+git commit -m "feat: add closing"
+git commit --amend -m "feat: add farewell message"
+
+# Part 4 — clean untracked only
+echo "temp" > notes.tmp
+mkdir -p scratch && echo "x" > scratch/any.txt
+git clean -f notes.tmp
+git clean -fd scratch/
+
+# Part 5 — revert the specific docs commit (no rewrite)
+git log --oneline --grep="docs: add branching steps" -- CONTRIBUTING.md
+# copy the hash (call it <DOCS_HASH>), then:
+git revert <DOCS_HASH> -n
+git commit -m "revert: remove unnecessary fork instruction"
+
+# Part 6 — history review
+git log --oneline --graph --decorate --all
+git log --follow --pretty=format:"%h %ad %an %s" --date=short -- app.txt
+git log --oneline --grep="fix: correct greeting typo" -- app.txt
+# copy the hash (call it <FIX_HASH>), then:
+git show <FIX_HASH> -- app.txt
