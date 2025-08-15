@@ -1,0 +1,49 @@
+Stage 1 Challenge #1 – “Selective Commit Workflow”
+
+Situation:
+You are working on a project. On a new branch, you make two changes:
+
+You fix a bug in app.txt (change “Version 1” to “Version 2”).
+
+You create a brand-new file README.md with some documentation text.
+
+However, you want the bugfix and the documentation to be in separate commits for clarity.
+When you’re done, merge the branch back into main (regular merge, not squash) and check the commit history.
+
+Your Task:
+Figure out the exact Git commands you would run, step-by-step, starting from the point where main already has an app.txt file with “Version 1” in it.
+
+Answer:
+
+# 1. Create and switch to a new feature branch
+git switch -c feature/bugfix
+
+# 2. (Optional) Verify the edit is in the working directory but unstaged
+git diff app.txt
+
+# 3. Stage only the bugfix change
+git add app.txt
+
+# 4. (Optional) Verify the staged change is correct
+git diff --cached app.txt
+
+# 5. Commit the bugfix
+git commit -m "fix: update version in app.txt"
+
+# 6. Create the README
+echo "This is a simple app" > README.md
+
+# 7. Stage only the README
+git add README.md
+
+# 8. Commit the documentation
+git commit -m "docs: add README"
+
+# 9. Switch back to main
+git switch main
+
+# 10. Merge the feature branch into main (regular merge)
+git merge feature/bugfix
+
+# 11. Verify the history
+git log --oneline --graph --decorate -n 5
