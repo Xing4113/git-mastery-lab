@@ -1,0 +1,48 @@
+tage 1 Challenge #5 — “History & Diff Like a Pro”
+
+Situation (on main):
+
+Your repo starts with app.txt containing:
+
+Hello
+
+
+committed as:
+
+feat: add greeting
+
+
+Make these commits in order:
+
+feat: add subject → append World to app.txt
+
+chore: add extra spacing → add a blank line after World
+
+feat: add punctuation → change the text to:
+
+Hello
+World!
+
+
+Your tasks:
+
+Show the full history (hash + message + author + date) for app.txt only.
+
+Show a graph view of the commit history for the entire repo, 1-line per commit.
+
+View the exact changes introduced in the feat: add punctuation commit only.
+
+Show the diff between the first and last commit for app.txt.
+
+Your task:
+Reply with the exact Git commands only (step-by-step, no explanations).
+
+Answer:
+
+git log --oneline --graph app.txt → shows commit history for app.txt (you used the short format; for full details you could switch to --pretty=format).
+
+git show 7273ac2 -- app.txt → exact changes from that commit only.
+
+git rev-list --max-parents=0 HEAD → got the very first commit hash.
+
+git diff 41a31f2 HEAD -- app.txt → full diff from the first commit to now.
