@@ -1,0 +1,117 @@
+Part 1 — Starting the feature
+
+Create and switch to feature/profile-page.
+
+Create profile.txt with:
+
+Profile page initial draft
+
+
+Commit with:
+
+feat: add profile page draft
+
+Part 2 — Mixed changes
+
+Edit profile.txt to:
+
+Profile page initial draft
+Added contact section
+
+
+Create README.md with:
+
+# Project Documentation
+This is a sample project.
+
+
+Stage only profile.txt changes and commit:
+
+feat: add contact section to profile page
+
+
+Stage and commit README.md separately with:
+
+docs: add project README
+
+Part 3 — Mistakes happen
+
+Edit profile.txt to:
+
+Profile page initial draft
+Added contact section
+Added buggy gallery section
+
+
+Commit with the wrong message:
+
+feat: add gallery
+
+
+Realize you forgot to mention that it’s buggy in the message — fix the last commit message to:
+
+feat: add buggy gallery section
+
+Part 4 — Cleanup
+
+Create an untracked file debug.log with any content.
+
+Create an untracked folder temp/ with a file inside.
+
+Remove only the untracked file and folder, without touching tracked files.
+
+Part 5 — Oops, wrong branch
+
+Without committing, edit profile.txt to:
+
+Profile page initial draft
+Added contact section
+Added buggy gallery section
+Fixed gallery bugs
+
+
+Realize you are still on feature/profile-page but this fix belongs on main.
+Move your current uncommitted change to main safely (no copy-paste allowed).
+
+Part 6 — History review
+
+Show a compact graph of the full repo history.
+
+Show the history of profile.txt only, with hash, date, author, and message.
+
+Show the changes from the commit where you added the buggy gallery section.
+
+Answer
+
+git switch -c feature/profile-page
+printf "Profile page initial draft\n" > profile.txt
+git add profile.txt
+git commit -m "feat: add profile page draft"
+
+printf "Added contact section\n" >> profile.txt
+printf "# Project Documentation\nThis is a sample project.\n" > README.md
+git add profile.txt
+git commit -m "feat: add contact section to profile page"
+git add README.md 
+git commit -m "docs: add project README"
+
+printf "Added buggy gallery section\n" >> profile.txt
+git add profile.txt
+git commit -m "feat: add gallery"
+git commit --amend -m "feat: add buggy gallery"
+
+echo "debug stuff" > debug.log
+mkdir -p temp
+echo "tmp" > temp/file.tmp
+git clean -f debug.log
+git clean -fd temp
+
+printf "Fixed gallery bugs\n" >> profile.txt
+git stash push -m "profile: gallery fix (uncommitted)"
+git switch main
+git stash pop
+
+git log --oneline --graph --decorate --all
+git log --follow --pretty=format:"%h %ad %an %s" --date=short -- profile.txt
+git log --oneline --grep="feat: add buggy gallery section" -- profile.txt
+git show 4d5e6f7 -- profile.txt
